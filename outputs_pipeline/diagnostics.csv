@@ -1,0 +1,16 @@
+feature,inf,nan,>1e6,z_outliers
+LAT,0,0,0,102
+LON,0,0,0,13215
+SOG,0,0,0,45692
+COG,0,0,0,0
+Heading,0,0,0,0
+v_x,0,0,0,43938
+v_y,0,0,0,194955
+turn_rate,1369197,376957,1369197,0
+accel_knots_per_hr,617971,1128183,617971,0
+dayofweek,0,0,0,0
+month,0,0,0,0
+Δt_hours,0,0,0,12038
+ΔCOG,0,0,0,251706
+ΔSOG,0,0,0,31854
+COG_rad,0,0,0,0
