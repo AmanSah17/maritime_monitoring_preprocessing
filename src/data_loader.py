@@ -1,76 +1,34 @@
 import torch
-from torch.utils.data import Dataset
-import numpy as np
+from torch.utils.data import IterableDataset
 import pandas as pd
-import gc
 from tqdm import tqdm
 
-class VesselSequenceDataset(Dataset):
+class LazyVesselSequenceDataset(IterableDataset):
     """
-    Memory-efficient AIS sequence dataset for time-series modeling.
-    
-    - Processes each MMSI group lazily (no full groupby materialization in memory)
-    - Prepares sliding windows (seq_len → pred_len) sequences
-    - Compatible with GPU tensors
+    Fully memory-efficient IterableDataset.
+    Generates sequences lazily per vessel.
     """
-
-    def __init__(self, df, input_features, target_features, seq_len=10, pred_len=1, max_groups=None):
-        self.seq_len = seq_len
-        self.pred_len = pred_len
+    def __init__(self, df, input_features, target_features, seq_len=10, pred_len=1, device=None):
+        self.df = df
         self.input_features = input_features
         self.target_features = target_features
+        self.seq_len = seq_len
+        self.pred_len = pred_len
+        self.device = device or torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.vessels = list(df['MMSI'].unique())
 
-        # Convert to Pandas if needed (in case of Modin/cuDF)
-        if not isinstance(df, pd.DataFrame):
-            df = df.to_pandas()
-
-        # Sort just once — important for sequential consistency
-        if 'BaseDateTime' in df.columns:
-            df = df.sort_values(['MMSI', 'BaseDateTime']).reset_index(drop=True)
-
-        self.samples = []  # store (index_start, index_end, mmsi)
-        self.data_store = {}  # optional in-memory caching for quick access
-
-        # Unique MMSIs (lazy iteration avoids high memory use)
-        unique_mmsis = df['MMSI'].unique()
-        if max_groups:
-            unique_mmsis = unique_mmsis[:max_groups]
-
-        print(f"🛰️ Preparing sequences for {len(unique_mmsis)} vessels...")
-
-        for mmsi in tqdm(unique_mmsis, desc="⛴️ Processing vessels", unit="vessel"):
-            grp = df[df['MMSI'] == mmsi]
-            if len(grp) < seq_len + pred_len:
+    def __iter__(self):
+        # Shuffle vessels each epoch
+        for mmsi in self.vessels:
+            vessel_df = self.df[self.df['MMSI'] == mmsi].sort_values("BaseDateTime")
+            features = torch.tensor(vessel_df[self.input_features].values, dtype=torch.float32)
+            targets = torch.tensor(vessel_df[self.target_features].values, dtype=torch.float32)
+            n_seq = len(features) - self.seq_len - self.pred_len + 1
+            if n_seq <= 0:
                 continue
-
-            X = grp[input_features].to_numpy(dtype=np.float32)
-            y = grp[target_features].to_numpy(dtype=np.float32)
-
-            # Sliding window generation
-            n_samples = len(X) - seq_len - pred_len + 1
-            for i in range(n_samples):
-                self.samples.append((mmsi, i))
-            
-            # Optionally keep numeric data (for speed) — but can skip to save memory
-            self.data_store[mmsi] = (X, y)
-
-            # clean up temporary references
-            del grp, X, y
-            gc.collect()
-
-        print(f"✅ Total generated sequences: {len(self.samples):,}")
-
-    def __len__(self):
-        return len(self.samples)
-
-    def __getitem__(self, idx):
-        mmsi, start_idx = self.samples[idx]
-        X_all, y_all = self.data_store[mmsi]
-
-        X_seq = X_all[start_idx:start_idx + self.seq_len]
-        y_seq = y_all[start_idx + self.seq_len:start_idx + self.seq_len + self.pred_len]
-
-        X_seq = torch.tensor(X_seq, dtype=torch.float32)
-        y_seq = torch.tensor(y_seq, dtype=torch.float32)
-
-        return X_seq, y_seq, mmsi
+            for i in range(n_seq):
+                X = features[i:i+self.seq_len].to(self.device)
+                y = targets[i+self.seq_len:i+self.seq_len+self.pred_len].to(self.device)
+                if self.pred_len == 1:
+                    y = y.squeeze(0)
+                yield X, y

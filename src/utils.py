@@ -39,3 +39,41 @@ def plot_metrics(history, metric_name, out_png):
     plt.xlabel('epoch'); plt.ylabel(metric_name); plt.legend(); plt.grid(True)
     ensure_dir(os.path.dirname(out_png))
     plt.savefig(out_png, dpi=150); plt.close()
+
+
+import os
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+
+def ensure_dir(path):
+    os.makedirs(path, exist_ok=True)
+
+def compute_regression_metrics(y_true, y_pred):
+    y_true = y_true.reshape(-1, y_true.shape[-1])
+    y_pred = y_pred.reshape(-1, y_pred.shape[-1])
+    mse = mean_squared_error(y_true, y_pred)
+    mae = mean_absolute_error(y_true, y_pred)
+    rmse = np.sqrt(mse)
+    r2 = r2_score(y_true, y_pred)
+    return {'mse': mse, 'mae': mae, 'rmse': rmse, 'r2': r2}
+
+def save_metrics_csv(history, path):
+    df = pd.DataFrame(history)
+    df.to_csv(path, index=False)
+
+def plot_loss_curves(history, path):
+    plt.figure(figsize=(8,5))
+    plt.plot(history['train_loss'], label='train_loss')
+    plt.plot(history['val_loss'], label='val_loss')
+    plt.xlabel('Epoch'); plt.ylabel('Loss'); plt.legend()
+    plt.savefig(path)
+    plt.close()
+
+def plot_metrics(history, metric_name, path):
+    plt.figure(figsize=(8,5))
+    plt.plot(history[metric_name], label=metric_name)
+    plt.xlabel('Epoch'); plt.ylabel(metric_name); plt.legend()
+    plt.savefig(path)
+    plt.close()
