@@ -180,11 +180,25 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 
-# Project-specific output directories (large files)
+# Project-specific output directories (large files and data)
+interpolated_results/
+outputs_pipeline/
 output_pipeline/
 processed_data/
 outputs_preprocessing/
+checkpoint_interpolated/
+Loitering/
+
+# Virtual environments and environment files
+environment/
+environments/
+*.yml
+*.yaml
 
 # Large data files
 *.pt
 *.pth
+*.pkl
+*.pickle
+*.parquet
+*.csv
