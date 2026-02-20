@@ -1,0 +1,14 @@
+{
+  "data_path_stationary": "F:\\PyTorch_GPU\\maritime_monitoring_preprocessing\\interpolated_results\\ais_20200105_20200112_stationary_anchor_moor.parquet",
+  "data_path_full": "F:\\PyTorch_GPU\\maritime_monitoring_preprocessing\\interpolated_results\\ais_20200105_20200112_plsn_nlsn_ready.parquet",
+  "best_params": {
+    "k": 1400,
+    "r": 8e-05,
+    "neighbor_mode": "4",
+    "min_dense_points": null
+  },
+  "ports_extracted": 338,
+  "edges_extracted": 860,
+  "clustered_points": 7070175,
+  "noise_points": 84292
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NLSN Gamma Sweep</title>
+  <style>
+    body { margin: 0; font-family: Segoe UI, sans-serif; background: #f8fafc; color: #111827; }
+    .wrap { padding: 16px; }
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 12px; margin-bottom: 14px; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th, td { border-bottom: 1px solid #e5e7eb; padding: 6px; text-align: left; }
+    th { background: #f3f4f6; }
+    iframe { width: 100%; height: 720px; border: 1px solid #d1d5db; border-radius: 8px; background: #fff; }
+    .scroll { max-height: 380px; overflow: auto; border: 1px solid #e5e7eb; border-radius: 8px; }
+    .row { display: grid; grid-template-columns: 1fr 2fr; gap: 12px; }
+    @media (max-width: 1000px) { .row { grid-template-columns: 1fr; } iframe { height: 520px; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h2>NLSN Gamma Hyperparameter Comparison</h2>
+    <p>Generated: 2026-02-20T21:22:49</p>
+    <div class="card">
+      <div class="row">
+        <div>
+          <label for="map-select"><b>Select gamma map:</b></label>
+          <select id="map-select" style="width:100%;padding:8px;"></select>
+          <div class="scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Gamma</th><th>Score</th><th>Nodes</th><th>Edges</th><th>Transitions</th>
+                  <th>Dr</th><th>Dl</th><th>LD</th><th>Coverage</th><th>Map</th>
+                </tr>
+              </thead>
+              <tbody><tr><td>0.0004</td><td>0.9909</td><td>283</td><td>825</td><td>3004</td><td>0.9307</td><td>0.7624</td><td>1.6931</td><td>0.7903</td><td><a href='gamma_0p0004\nlsn_map.html' target='_blank'>Open Map</a></td></tr><tr><td>0.0003</td><td>0.9883</td><td>279</td><td>821</td><td>3080</td><td>0.9189</td><td>0.7657</td><td>1.6846</td><td>0.7860</td><td><a href='gamma_0p0003\nlsn_map.html' target='_blank'>Open Map</a></td></tr><tr><td>0.0002</td><td>0.9818</td><td>279</td><td>797</td><td>3105</td><td>0.8983</td><td>0.7681</td><td>1.6663</td><td>0.7812</td><td><a href='gamma_0p0002\nlsn_map.html' target='_blank'>Open Map</a></td></tr><tr><td>0.00015</td><td>0.9789</td><td>266</td><td>754</td><td>2992</td><td>0.8789</td><td>0.7767</td><td>1.6556</td><td>0.7747</td><td><a href='gamma_0p00015\nlsn_map.html' target='_blank'>Open Map</a></td></tr><tr><td>0.0001</td><td>0.9717</td><td>272</td><td>752</td><td>3153</td><td>0.8412</td><td>0.7919</td><td>1.6332</td><td>0.7695</td><td><a href='gamma_0p0001\nlsn_map.html' target='_blank'>Open Map</a></td></tr><tr><td>8e-05</td><td>0.9698</td><td>271</td><td>757</td><td>3155</td><td>0.8136</td><td>0.8097</td><td>1.6233</td><td>0.7708</td><td><a href='gamma_8e-05\nlsn_map.html' target='_blank'>Open Map</a></td></tr><tr><td>5e-05</td><td>0.9675</td><td>273</td><td>734</td><td>3224</td><td>0.7345</td><td>0.8803</td><td>1.6148</td><td>0.7717</td><td><a href='gamma_5e-05\nlsn_map.html' target='_blank'>Open Map</a></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+        <div>
+          <iframe id="map-frame" src="gamma_0p0004\nlsn_map.html"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const methods = [{"label": "gamma=0.0004 | score=0.9909", "gamma": 0.0004, "score": 0.9909346794020983, "nodes": 283, "edges": 825, "transitions": 3004, "compression_rate_dr": 0.930685801190396, "distance_similarity_dl": 0.7624028778032153, "ld_score": 1.6930886789936113, "cluster_coverage": 0.7903135821469796, "map_rel": "gamma_0p0004\\nlsn_map.html"}, {"label": "gamma=0.0003 | score=0.9883", "gamma": 0.0003, "score": 0.9883392684561654, "nodes": 279, "edges": 821, "transitions": 3080, "compression_rate_dr": 0.9189111883491339, "distance_similarity_dl": 0.7657191052644052, "ld_score": 1.684630293613539, "cluster_coverage": 0.7860014800197336, "map_rel": "gamma_0p0003\\nlsn_map.html"}, {"label": "gamma=0.0002 | score=0.9818", "gamma": 0.0002, "score": 0.9817592640446341, "nodes": 279, "edges": 797, "transitions": 3105, "compression_rate_dr": 0.8982929478336645, "distance_similarity_dl": 0.7680551067574816, "ld_score": 1.666348054591146, "cluster_coverage": 0.7811647786868051, "map_rel": "gamma_0p0002\\nlsn_map.html"}, {"label": "gamma=0.00015 | score=0.9789", "gamma": 0.00015, "score": 0.9788970223420401, "nodes": 266, "edges": 754, "transitions": 2992, "compression_rate_dr": 0.878891172840782, "distance_similarity_dl": 0.7767392279998706, "ld_score": 1.6556304008406526, "cluster_coverage": 0.774748339467143, "map_rel": "gamma_0p00015\\nlsn_map.html"}, {"label": "gamma=0.0001 | score=0.9717", "gamma": 0.0001, "score": 0.971710954902344, "nodes": 272, "edges": 752, "transitions": 3153, "compression_rate_dr": 0.8412420816395382, "distance_similarity_dl": 0.7919179476713276, "ld_score": 1.633160029310866, "cluster_coverage": 0.7694646614394127, "map_rel": "gamma_0p0001\\nlsn_map.html"}, {"label": "gamma=8e-05 | score=0.9698", "gamma": 8e-05, "score": 0.9697876059103981, "nodes": 271, "edges": 757, "transitions": 3155, "compression_rate_dr": 0.8136417490700656, "distance_similarity_dl": 0.8096692467344982, "ld_score": 1.6233109958045637, "cluster_coverage": 0.7707910714221826, "map_rel": "gamma_8e-05\\nlsn_map.html"}, {"label": "gamma=5e-05 | score=0.9675", "gamma": 5e-05, "score": 0.9674882014007208, "nodes": 273, "edges": 734, "transitions": 3224, "compression_rate_dr": 0.7344728127123148, "distance_similarity_dl": 0.8803438564144241, "ld_score": 1.614816669126739, "cluster_coverage": 0.7716796715610268, "map_rel": "gamma_5e-05\\nlsn_map.html"}];
+    const select = document.getElementById('map-select');
+    const frame = document.getElementById('map-frame');
+    methods.forEach((m, idx) => {
+      const opt = document.createElement('option');
+      opt.value = m.map_rel;
+      opt.textContent = `${idx + 1}. gamma=${m.gamma} (score=${m.score.toFixed(4)})`;
+      select.appendChild(opt);
+    });
+    select.addEventListener('change', () => {
+      frame.src = select.value;
+    });
+  </script>
+</body>
+</html>
